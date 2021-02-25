@@ -4,8 +4,6 @@ import { UsersRepository } from '../repositories/UsersRepository';
 
 
 class UserController {
-
-
   async create(request: Request, response: Response) {
     const { name, email } = request.body;
     const userRepository = getCustomRepository(UsersRepository)
