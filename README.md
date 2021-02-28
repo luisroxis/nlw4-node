@@ -13,7 +13,9 @@
     <img alt="sqlite" src="https://img.shields.io/badge/Jest-99424f?style=for-the-badge&logo=jest&logoColor=white"/>
 </p>
 
+
 <b>Integrações</b>
-<p>
-  <img alt="codeship" src="https://app.codeship.com/projects/2ae407b8-9433-4142-aefc-c61900ebbcf2/status?branch=main">
+<p> <strong>CodeShip</strong>  <img alt="Codeship (branch)" src="https://img.shields.io/codeship/2ae407b8-9433-4142-aefc-c61900ebbcf2/main?style=for-the-badge">
+</p>
+<p> <strong>GitHuh Actions</strong> : <img alt="" src="https://img.shields.io/github/workflow/status/luisroxis/nlw4-node/CI/main?style=for-the-badge" />
 </p>
