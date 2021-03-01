@@ -5,6 +5,6 @@ const answerController = new AnswerController()
 const answerRouter = Router()
 
 
-answerRouter.get('/', answerController.index)
+answerRouter.get('/:nota', answerController.execute)
 
 export default answerRouter

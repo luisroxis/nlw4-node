@@ -5,6 +5,7 @@ import { SurveysUsersRepository } from '../repositories/SurveysUserRepository'
 import { UsersRepository } from '../repositories/UsersRepository'
 import SendMailService from '../services/SendMailService'
 import {resolve} from 'path';
+import { AppError } from '../error/AppError';
 
 class SendMailController {
   async execute(request: Request, response: Response) {
@@ -19,36 +20,31 @@ class SendMailController {
     const user = await usersRepository.findOne({email})
 
     if(!user) {
-      return response.status(400).json({error: 'User not found'})
+      throw new AppError('User not found', 400)
     }
 
     const survey = await surveysRepository.findOne({id: surveyId})
 
     if(!survey) {
-      return response.status(400).json({error: 'Survey not found'})
+      throw new AppError('Survey not found',400)
     }
 
     const surveyUserExists = await surveysUsersRepository.findOne({
-      where: [{
-        userId: user.id
-      },
-      {
-        value: null
-      }]
+      where: {userId: user.id, value: null},
+      relations: ['user', 'survey'],
     })
     const link =  'http://' + process.env.HOST +':'+ process.env.PORT +'/answers'
-    console.log(link)
 
     const variables = {
       name: user.name,
       title: survey.title,
       description: survey.description,
-      userId: user.id,
+      id: '',
       link
     }
 
-
     if(surveyUserExists) {
+      variables.id = surveyUserExists.id
       await SendMailService.execute(email,survey.title, variables ,npsPath)
       return response.status(201).json(surveyUserExists)
     }
@@ -59,9 +55,9 @@ class SendMailController {
     })
 
     await surveysUsersRepository.save(surveyUser)
+    variables.id = surveyUser.id
 
     await SendMailService.execute(email,survey.title, variables ,npsPath)
-
 
     return response.status(201).json(surveyUser)
   }
